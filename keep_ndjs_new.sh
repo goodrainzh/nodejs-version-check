@@ -45,7 +45,24 @@ function msg_tasks() {
     elif [ -f /var/log/ndjs_info.err ];then
         dd_download_err
         rm /var/log/ndjs_info.err
+    else
+        dd_nothing_info
     fi
+}
+
+function dd_nothing_info() {
+    log_info=$(cat /var/log/ndjs_info.log)
+    curl 'https://oapi.dingtalk.com/robot/send?access_token=6786cba9d28faf7241b3c5de63351c49f8e1286564c49a24058f0d5cb3bc4045' \
+    -H 'Content-Type: application/json' \
+    -d '{
+        "msgtype": "text", 
+            "text": {
+                "content": "'"$NDJS_LOG_DATE : node.js-version均为最新版，未更新"'"
+            },
+            "at": {
+            "atMobiles": ["17614720053"],
+            }
+        }'
 }
 
 #钉钉更新提示
